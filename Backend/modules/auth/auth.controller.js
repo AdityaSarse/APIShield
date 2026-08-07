@@ -1,6 +1,7 @@
 import { registerUser } from "./services/register.service.js";
 import { loginUser } from "./services/login.service.js";
 import { refreshAccessToken } from "./services/refreshToken.service.js";
+import { logoutUser } from "./services/logout.service.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 
 export const register = async (req, res, next) => {
@@ -56,6 +57,28 @@ export const refresh = async (req, res, next) => {
         200,
         "Access token refreshed successfully",
         data
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (req, res, next) => {
+  try {
+    await logoutUser();
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Logout successful",
+        null
       )
     );
   } catch (error) {
