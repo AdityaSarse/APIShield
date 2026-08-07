@@ -1,5 +1,6 @@
 import { registerUser } from "./services/register.service.js";
 import { loginUser } from "./services/login.service.js";
+import { refreshAccessToken } from "./services/refreshToken.service.js";
 import ApiResponse from "../../utils/ApiResponse.js";
 
 export const register = async (req, res, next) => {
@@ -37,6 +38,24 @@ export const login = async (req, res, next) => {
           user,
           accessToken,
         }
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const refresh = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+
+    const data = await refreshAccessToken(refreshToken);
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Access token refreshed successfully",
+        data
       )
     );
   } catch (error) {
