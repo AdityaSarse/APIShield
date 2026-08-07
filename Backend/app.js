@@ -1,12 +1,15 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import morgan from "morgan";
+
+import routes from "./routes/index.js";
+import notFound from "./middleware/notFound.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 
-// Middlewares
 app.use(cors());
 app.use(helmet());
 app.use(morgan("dev"));
@@ -17,9 +20,19 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
-        project: "APIShield",
-        message: "APIShield Backend is running 🚀"
+        message: "🚀 APIShield Backend is running",
+        version: "v1",
+        status: "healthy",
     });
 });
+
+// API Routes
+app.use("/api/v1", routes);
+
+// 404 Handler
+app.use(notFound);
+
+// Global Error Handler
+app.use(errorHandler);
 
 export default app;
