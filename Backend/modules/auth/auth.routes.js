@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { register, login } from "./auth.controller.js";
+import { register, login, refresh } from "./auth.controller.js";
 import { getProfile } from "./auth.profile.controller.js";
 
 import authenticate from "../../middleware/auth.middleware.js";
@@ -22,6 +22,11 @@ router.post(
   "/login",
   validate(loginSchema),
   login
+);
+
+router.post(
+  "/refresh",
+  refresh
 );
 
 router.get(
