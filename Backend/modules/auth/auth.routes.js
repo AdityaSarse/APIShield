@@ -6,8 +6,10 @@ import {
   logout,
 } from "./auth.controller.js";
 import { getProfile } from "./auth.profile.controller.js";
+import { adminDashboard } from "./auth.admin.controller.js";
 
 import authenticate from "../../middleware/auth.middleware.js";
+import authorize from "../../middleware/authorize.middleware.js";
 import validate from "../../middleware/validate.js";
 
 import {
@@ -43,6 +45,13 @@ router.get(
   "/profile",
   authenticate,
   getProfile
+);
+
+router.get(
+  "/admin",
+  authenticate,
+  authorize("admin"),
+  adminDashboard
 );
 
 export default router;
