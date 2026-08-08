@@ -20,6 +20,24 @@ model User {
   passwordHash String
   role         Role     @default(developer)
   status       Boolean  @default(true)
+
+  apiKeys      ApiKey[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model ApiKey {
+  id          String    @id @default(uuid())
+  name        String
+  keyHash     String
+  prefix      String
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revoked     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      String
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
