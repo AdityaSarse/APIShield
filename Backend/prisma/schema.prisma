@@ -30,7 +30,7 @@ model User {
 model ApiKey {
   id          String    @id @default(uuid())
   name        String
-  keyHash     String
+  keyHash     String    @unique
   prefix      String
   lastUsedAt  DateTime?
   expiresAt   DateTime?
@@ -40,4 +40,6 @@ model ApiKey {
   userId      String
 
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, name])
 }
