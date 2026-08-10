@@ -54,6 +54,17 @@ export const findApiKeyByIdForUpdate = async (id, userId) => {
   });
 };
 
+export const findApiKeyByHash = async (keyHash) => {
+  return prisma.apiKey.findFirst({
+    where: {
+      keyHash,
+    },
+    include: {
+      user: true,
+    },
+  });
+};
+
 export const revokeApiKey = async (id) => {
   return prisma.apiKey.update({
     where: {
