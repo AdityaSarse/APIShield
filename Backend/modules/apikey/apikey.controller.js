@@ -9,6 +9,7 @@ export const createApiKey = async (req, res, next) => {
   try {
     const result = await generateKey({
       name: req.validatedData.name,
+      expiresAt: req.validatedData.expiresAt,
       userId: req.user.id,
     });
 
