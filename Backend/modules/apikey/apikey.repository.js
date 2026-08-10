@@ -95,3 +95,14 @@ export const updateApiKey = async (id, data) => {
     },
   });
 };
+
+export const updateLastUsedAt = async (id) => {
+  return prisma.apiKey.update({
+    where: {
+      id,
+    },
+    data: {
+      lastUsedAt: new Date(),
+    },
+  });
+};
