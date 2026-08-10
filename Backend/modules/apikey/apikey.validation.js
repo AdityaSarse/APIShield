@@ -6,4 +6,9 @@ export const createApiKeySchema = z.object({
     .trim()
     .min(3)
     .max(100),
+
+  expiresAt: z
+    .string()
+    .datetime()
+    .optional(),
 });
