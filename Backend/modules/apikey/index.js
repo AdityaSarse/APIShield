@@ -9,6 +9,7 @@ export * from "./apikey.validation.js";
 
 export * from "./services/generateKey.service.js";
 export * from "./services/listKeys.service.js";
+export * from "./services/getKeyDetails.service.js";
 export * from "./services/revokeKey.service.js";
 export * from "./services/rotateKey.service.js";
 
