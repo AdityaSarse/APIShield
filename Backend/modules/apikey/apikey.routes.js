@@ -7,6 +7,8 @@ import validate from "../../middleware/validate.js";
 import {
   createApiKey,
   getApiKeys,
+  getApiKey,
+  revokeApiKey,
 } from "./apikey.controller.js";
 
 import { createApiKeySchema } from "./apikey.validation.js";
@@ -26,6 +28,20 @@ router.get(
   authenticate,
   authorize("developer", "admin"),
   getApiKeys
+);
+
+router.get(
+  "/:id",
+  authenticate,
+  authorize("developer", "admin"),
+  getApiKey
+);
+
+router.patch(
+  "/:id/revoke",
+  authenticate,
+  authorize("developer", "admin"),
+  revokeApiKey
 );
 
 export default router;
