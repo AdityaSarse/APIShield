@@ -1,4 +1,5 @@
 import ApiResponse from "../../utils/ApiResponse.js";
+import { getServiceProxy } from "./proxyFactory.js";
 
 export const gatewayHealth = (req, res) => {
   return res.status(200).json(
@@ -20,4 +21,12 @@ export const gatewayHealth = (req, res) => {
       }
     )
   );
+};
+
+export const proxyRequest = (req, res, next) => {
+  const { service } = req.params;
+
+  const proxy = getServiceProxy(service);
+
+  return proxy(req, res, next);
 };
