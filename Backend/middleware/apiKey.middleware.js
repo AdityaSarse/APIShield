@@ -1,10 +1,10 @@
 import ApiError from "../utils/ApiError.js";
 import { hashApiKey } from "../utils/apiKey.js";
-import * as apiKeyRepository from "../modules/apikey/apikey.repository.js";
+import * as repository from "../modules/apikey/apikey.repository.js";
 
 const authenticateApiKey = async (req, res, next) => {
   try {
-    const apiKey = req.headers["x-api-key"];
+    const apiKey = req.header("x-api-key");
 
     if (!apiKey) {
       throw new ApiError(401, "API key is required");
@@ -12,7 +12,7 @@ const authenticateApiKey = async (req, res, next) => {
 
     const keyHash = hashApiKey(apiKey);
 
-    const key = await apiKeyRepository.findApiKeyByHash(keyHash);
+    const key = await repository.findApiKeyByHash(keyHash);
 
     if (!key) {
       throw new ApiError(401, "Invalid API key");
@@ -27,6 +27,7 @@ const authenticateApiKey = async (req, res, next) => {
     }
 
     req.apiKey = key;
+    req.user = key.user;
 
     next();
   } catch (error) {
