@@ -26,6 +26,8 @@ const authenticateApiKey = async (req, res, next) => {
       throw new ApiError(401, "API key has expired");
     }
 
+    await repository.updateLastUsedAt(key.id);
+
     req.apiKey = key;
     req.user = key.user;
 
