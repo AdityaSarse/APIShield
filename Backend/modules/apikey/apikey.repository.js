@@ -70,3 +70,17 @@ export const revokeApiKey = async (id) => {
     },
   });
 };
+
+export const updateApiKey = async (id, data) => {
+  return prisma.apiKey.update({
+    where: {
+      id,
+    },
+    data,
+    select: {
+      id: true,
+      name: true,
+      updatedAt: true,
+    },
+  });
+};

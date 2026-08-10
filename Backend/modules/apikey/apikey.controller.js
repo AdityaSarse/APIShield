@@ -3,6 +3,7 @@ import { generateKey } from "./services/generateKey.service.js";
 import { listApiKeys } from "./services/listKeys.service.js";
 import { getApiKeyDetails } from "./services/getKeyDetails.service.js";
 import { revokeKey } from "./services/revokeKey.service.js";
+import { rotateKey } from "./services/rotateKey.service.js";
 
 export const createApiKey = async (req, res, next) => {
   try {
@@ -65,6 +66,25 @@ export const revokeApiKey = async (req, res, next) => {
       new ApiResponse(
         200,
         "API key revoked successfully",
+        result
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const rotateApiKey = async (req, res, next) => {
+  try {
+    const result = await rotateKey(
+      req.params.id,
+      req.user.id
+    );
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "API key rotated successfully",
         result
       )
     );

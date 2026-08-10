@@ -9,6 +9,7 @@ import {
   getApiKeys,
   getApiKey,
   revokeApiKey,
+  rotateApiKey,
 } from "./apikey.controller.js";
 
 import { createApiKeySchema } from "./apikey.validation.js";
@@ -42,6 +43,13 @@ router.patch(
   authenticate,
   authorize("developer", "admin"),
   revokeApiKey
+);
+
+router.patch(
+  "/:id/rotate",
+  authenticate,
+  authorize("developer", "admin"),
+  rotateApiKey
 );
 
 export default router;
