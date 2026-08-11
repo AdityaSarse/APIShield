@@ -65,3 +65,32 @@ export const getStatusCodeAnalytics = async () => {
     count: item._count.statusCode,
   }));
 };
+
+export const getServiceAnalytics = async () => {
+  const logs = await prisma.requestLog.findMany({
+    select: {
+      path: true,
+    },
+  });
+
+  const serviceCounts = {};
+
+  for (const log of logs) {
+    const match = log.path.match(/\/api\/v1\/gateway\/([^/]+)/);
+
+    if (!match) {
+      continue;
+    }
+
+    const service = match[1];
+
+    serviceCounts[service] = (serviceCounts[service] || 0) + 1;
+  }
+
+  return Object.entries(serviceCounts)
+    .map(([service, count]) => ({
+      service,
+      count,
+    }))
+    .sort((a, b) => b.count - a.count);
+};

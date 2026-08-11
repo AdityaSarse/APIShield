@@ -5,6 +5,7 @@ import authorize from "../../middleware/authorize.middleware.js";
 import {
   analyticsSummary,
   statusCodeAnalytics,
+  serviceAnalytics,
 } from "./analytics.controller.js";
 
 const router = Router();
@@ -21,6 +22,13 @@ router.get(
   authenticate,
   authorize("admin"),
   statusCodeAnalytics
+);
+
+router.get(
+  "/services",
+  authenticate,
+  authorize("admin"),
+  serviceAnalytics
 );
 
 export default router;
