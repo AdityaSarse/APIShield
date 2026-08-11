@@ -6,6 +6,7 @@ import {
   analyticsSummary,
   statusCodeAnalytics,
   serviceAnalytics,
+  topApiKeysAnalytics,
 } from "./analytics.controller.js";
 
 const router = Router();
@@ -29,6 +30,13 @@ router.get(
   authenticate,
   authorize("admin"),
   serviceAnalytics
+);
+
+router.get(
+  "/top-api-keys",
+  authenticate,
+  authorize("admin"),
+  topApiKeysAnalytics
 );
 
 export default router;

@@ -94,3 +94,48 @@ export const getServiceAnalytics = async () => {
     }))
     .sort((a, b) => b.count - a.count);
 };
+
+export const getTopApiKeysAnalytics = async () => {
+  const results = await prisma.requestLog.groupBy({
+    by: ["apiKeyId"],
+    where: {
+      apiKeyId: {
+        not: null,
+      },
+    },
+    _count: {
+      apiKeyId: true,
+    },
+    orderBy: {
+      _count: {
+        apiKeyId: "desc",
+      },
+    },
+  });
+
+  const apiKeyIds = results
+    .map((item) => item.apiKeyId)
+    .filter(Boolean);
+
+  const apiKeys = await prisma.apiKey.findMany({
+    where: {
+      id: {
+        in: apiKeyIds,
+      },
+    },
+    select: {
+      id: true,
+      prefix: true,
+    },
+  });
+
+  const apiKeyMap = new Map(
+    apiKeys.map((apiKey) => [apiKey.id, apiKey.prefix])
+  );
+
+  return results.map((item) => ({
+    apiKeyId: item.apiKeyId,
+    keyPrefix: apiKeyMap.get(item.apiKeyId) ?? null,
+    requestCount: item._count.apiKeyId,
+  }));
+};
