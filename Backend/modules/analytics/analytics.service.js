@@ -48,3 +48,20 @@ export const getAnalyticsSummary = async () => {
     activeApiKeys,
   };
 };
+
+export const getStatusCodeAnalytics = async () => {
+  const results = await prisma.requestLog.groupBy({
+    by: ["statusCode"],
+    _count: {
+      statusCode: true,
+    },
+    orderBy: {
+      statusCode: "asc",
+    },
+  });
+
+  return results.map((item) => ({
+    statusCode: item.statusCode,
+    count: item._count.statusCode,
+  }));
+};
