@@ -6,6 +6,7 @@ import {
   getTopApiKeysAnalytics,
   getResponseTimeAnalytics,
   getDailyRequestAnalytics,
+  getErrorRateAnalytics,
 } from "./analytics.service.js";
 
 export const analyticsSummary = async (req, res, next) => {
@@ -96,6 +97,22 @@ export const dailyRequestAnalytics = async (req, res, next) => {
       new ApiResponse(
         200,
         "Daily request analytics fetched successfully",
+        analytics
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const errorRateAnalytics = async (req, res, next) => {
+  try {
+    const analytics = await getErrorRateAnalytics();
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Error-rate analytics fetched successfully",
         analytics
       )
     );

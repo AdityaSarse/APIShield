@@ -9,6 +9,7 @@ import {
   topApiKeysAnalytics,
   responseTimeAnalytics,
   dailyRequestAnalytics,
+  errorRateAnalytics,
 } from "./analytics.controller.js";
 
 const router = Router();
@@ -53,6 +54,13 @@ router.get(
   authenticate,
   authorize("admin"),
   dailyRequestAnalytics
+);
+
+router.get(
+  "/error-rate",
+  authenticate,
+  authorize("admin"),
+  errorRateAnalytics
 );
 
 export default router;

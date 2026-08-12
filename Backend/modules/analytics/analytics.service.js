@@ -187,3 +187,42 @@ export const getDailyRequestAnalytics = async () => {
     count,
   }));
 };
+
+export const getErrorRateAnalytics = async () => {
+  const [
+    totalRequests,
+    successfulRequests,
+    failedRequests,
+  ] = await Promise.all([
+    prisma.requestLog.count(),
+
+    prisma.requestLog.count({
+      where: {
+        statusCode: {
+          gte: 200,
+          lt: 400,
+        },
+      },
+    }),
+
+    prisma.requestLog.count({
+      where: {
+        statusCode: {
+          gte: 400,
+        },
+      },
+    }),
+  ]);
+
+  const errorRate =
+    totalRequests === 0
+      ? 0
+      : Number(((failedRequests / totalRequests) * 100).toFixed(2));
+
+  return {
+    totalRequests,
+    successfulRequests,
+    failedRequests,
+    errorRate,
+  };
+};
