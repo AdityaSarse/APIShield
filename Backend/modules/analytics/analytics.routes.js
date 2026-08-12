@@ -8,6 +8,7 @@ import {
   serviceAnalytics,
   topApiKeysAnalytics,
   responseTimeAnalytics,
+  dailyRequestAnalytics,
 } from "./analytics.controller.js";
 
 const router = Router();
@@ -45,6 +46,13 @@ router.get(
   authenticate,
   authorize("admin"),
   responseTimeAnalytics
+);
+
+router.get(
+  "/daily",
+  authenticate,
+  authorize("admin"),
+  dailyRequestAnalytics
 );
 
 export default router;

@@ -163,3 +163,27 @@ export const getResponseTimeAnalytics = async () => {
     maximumResponseTime: result._max.responseTime ?? 0,
   };
 };
+
+export const getDailyRequestAnalytics = async () => {
+  const logs = await prisma.requestLog.findMany({
+    select: {
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
+
+  const dailyCounts = {};
+
+  for (const log of logs) {
+    const date = log.createdAt.toISOString().split("T")[0];
+
+    dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+  }
+
+  return Object.entries(dailyCounts).map(([date, count]) => ({
+    date,
+    count,
+  }));
+};
