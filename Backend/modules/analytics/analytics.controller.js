@@ -4,6 +4,7 @@ import {
   getStatusCodeAnalytics,
   getServiceAnalytics,
   getTopApiKeysAnalytics,
+  getResponseTimeAnalytics,
 } from "./analytics.service.js";
 
 export const analyticsSummary = async (req, res, next) => {
@@ -62,6 +63,22 @@ export const topApiKeysAnalytics = async (req, res, next) => {
       new ApiResponse(
         200,
         "Top API keys analytics fetched successfully",
+        analytics
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const responseTimeAnalytics = async (req, res, next) => {
+  try {
+    const analytics = await getResponseTimeAnalytics();
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Response-time analytics fetched successfully",
         analytics
       )
     );

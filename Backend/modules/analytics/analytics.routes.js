@@ -7,6 +7,7 @@ import {
   statusCodeAnalytics,
   serviceAnalytics,
   topApiKeysAnalytics,
+  responseTimeAnalytics,
 } from "./analytics.controller.js";
 
 const router = Router();
@@ -37,6 +38,13 @@ router.get(
   authenticate,
   authorize("admin"),
   topApiKeysAnalytics
+);
+
+router.get(
+  "/response-times",
+  authenticate,
+  authorize("admin"),
+  responseTimeAnalytics
 );
 
 export default router;
