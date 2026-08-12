@@ -18,15 +18,25 @@ export const getServiceProxy = (serviceName) => {
   const proxy = createProxyMiddleware({
     target: service.target,
     changeOrigin: true,
-    pathRewrite: (path, req) => {
-      return path.replace(`/api/v1/gateway/${serviceName}`, "");
+
+    pathRewrite: (path) => {
+      if (path === "/") {
+        return `/${serviceName}`;
+      }
+
+      return `/${serviceName}${path}`;
     },
+
     onError: (err, req, res) => {
-      res.status(502).json({
-        success: false,
-        statusCode: 502,
-        message: `Target service '${serviceName}' is unreachable at ${service.target}`,
-      });
+      console.error(`Proxy error for ${serviceName}:`, err.message);
+
+      if (!res.headersSent) {
+        res.status(502).json({
+          success: false,
+          statusCode: 502,
+          message: `Target service '${serviceName}' is unreachable at ${service.target}`,
+        });
+      }
     },
   });
 
