@@ -1,4 +1,5 @@
 import prisma from "../../config/prisma.js";
+import redis from "../../config/redis.js";
 
 export const getAnalyticsSummary = async () => {
   const [
@@ -224,5 +225,79 @@ export const getErrorRateAnalytics = async () => {
     successfulRequests,
     failedRequests,
     errorRate,
+  };
+};
+
+export const getGatewayMonitoring = async () => {
+  const startTime = Date.now();
+
+  // PostgreSQL health check
+  let databaseStatus = "connected";
+
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+  } catch (error) {
+    databaseStatus = "disconnected";
+  }
+
+  // Redis health check
+  let redisStatus = "connected";
+
+  try {
+    await redis.ping();
+  } catch (error) {
+    redisStatus = "disconnected";
+  }
+
+  // Request metrics
+  const [totalRequests, recentErrors, responseTime] =
+    await Promise.all([
+      prisma.requestLog.count(),
+
+      prisma.requestLog.count({
+        where: {
+          statusCode: {
+            gte: 400,
+          },
+          createdAt: {
+            gte: new Date(Date.now() - 24 * 60 * 60 * 1000),
+          },
+        },
+      }),
+
+      prisma.requestLog.aggregate({
+        _avg: {
+          responseTime: true,
+        },
+      }),
+    ]);
+
+  const gatewayStatus =
+    databaseStatus === "disconnected"
+      ? "unhealthy"
+      : redisStatus === "disconnected"
+        ? "degraded"
+        : "healthy";
+
+  return {
+    gateway: {
+      status: gatewayStatus,
+      uptime: process.uptime(),
+      checkTime: Date.now() - startTime,
+    },
+
+    database: {
+      status: databaseStatus,
+    },
+
+    redis: {
+      status: redisStatus,
+    },
+
+    metrics: {
+      totalRequests,
+      recentErrors,
+      averageResponseTime: responseTime._avg.responseTime ?? 0,
+    },
   };
 };

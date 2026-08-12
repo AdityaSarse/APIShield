@@ -10,6 +10,7 @@ import {
   responseTimeAnalytics,
   dailyRequestAnalytics,
   errorRateAnalytics,
+  gatewayMonitoring,
 } from "./analytics.controller.js";
 
 const router = Router();
@@ -61,6 +62,13 @@ router.get(
   authenticate,
   authorize("admin"),
   errorRateAnalytics
+);
+
+router.get(
+  "/monitoring",
+  authenticate,
+  authorize("admin"),
+  gatewayMonitoring
 );
 
 export default router;
