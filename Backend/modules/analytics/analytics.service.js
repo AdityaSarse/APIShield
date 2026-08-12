@@ -139,3 +139,27 @@ export const getTopApiKeysAnalytics = async () => {
     requestCount: item._count.apiKeyId,
   }));
 };
+
+export const getResponseTimeAnalytics = async () => {
+  const result = await prisma.requestLog.aggregate({
+    _count: {
+      id: true,
+    },
+    _avg: {
+      responseTime: true,
+    },
+    _min: {
+      responseTime: true,
+    },
+    _max: {
+      responseTime: true,
+    },
+  });
+
+  return {
+    totalRequests: result._count.id,
+    averageResponseTime: result._avg.responseTime ?? 0,
+    minimumResponseTime: result._min.responseTime ?? 0,
+    maximumResponseTime: result._max.responseTime ?? 0,
+  };
+};
