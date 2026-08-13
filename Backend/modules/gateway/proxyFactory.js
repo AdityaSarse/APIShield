@@ -19,24 +19,35 @@ export const getServiceProxy = (serviceName) => {
     target: service.target,
     changeOrigin: true,
 
+    on: {
+      proxyReq: (proxyReq, req) => {
+        console.log(
+          `[Gateway] ${req.method} ${req.originalUrl} -> ${service.target}${req.url}`
+        );
+      },
+
+      error: (err, req, res) => {
+        console.error(
+          `[Gateway] Proxy error for ${serviceName}:`,
+          err.message
+        );
+
+        if (!res.headersSent) {
+          res.status(502).json({
+            success: false,
+            statusCode: 502,
+            message: `Target service '${serviceName}' is unreachable at ${service.target}`,
+          });
+        }
+      },
+    },
+
     pathRewrite: (path) => {
       if (path === "/") {
         return `/${serviceName}`;
       }
 
       return `/${serviceName}${path}`;
-    },
-
-    onError: (err, req, res) => {
-      console.error(`Proxy error for ${serviceName}:`, err.message);
-
-      if (!res.headersSent) {
-        res.status(502).json({
-          success: false,
-          statusCode: 502,
-          message: `Target service '${serviceName}' is unreachable at ${service.target}`,
-        });
-      }
     },
   });
 
