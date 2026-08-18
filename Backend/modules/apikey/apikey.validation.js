@@ -9,6 +9,8 @@ export const createApiKeySchema = z.object({
 
   expiresAt: z
     .string()
-    .datetime()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: "expiresAt must be a valid date string",
+    })
     .optional(),
 });

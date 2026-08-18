@@ -8,6 +8,9 @@ import {
   getDailyRequestAnalytics,
   getErrorRateAnalytics,
   getGatewayMonitoring,
+  getRateLimitAnalytics,
+  getRecentRequests,
+  getEndpointAnalytics,
 } from "./analytics.service.js";
 
 export const analyticsSummary = async (req, res, next) => {
@@ -137,3 +140,52 @@ export const gatewayMonitoring = async (req, res, next) => {
     next(error);
   }
 };
+
+export const rateLimitAnalytics = async (req, res, next) => {
+  try {
+    const analytics = await getRateLimitAnalytics();
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Rate-limit analytics fetched successfully",
+        analytics
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const recentRequests = async (req, res, next) => {
+  try {
+    const requests = await getRecentRequests();
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Recent requests fetched successfully",
+        requests
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const endpointAnalytics = async (req, res, next) => {
+  try {
+    const analytics = await getEndpointAnalytics();
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Endpoint analytics fetched successfully",
+        analytics
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+

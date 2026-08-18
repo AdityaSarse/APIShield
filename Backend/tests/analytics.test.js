@@ -114,43 +114,62 @@ describe("Analytics Service", () => {
   });
 
   describe("getServiceAnalytics", () => {
-    test("should count requests by gateway service", async () => {
+    test("should count requests by registered gateway service and include zero-traffic services", async () => {
       prismaMock.requestLog.findMany.mockResolvedValueOnce([
         {
           path: "/api/v1/gateway/users",
+          statusCode: 200,
+          responseTime: 50,
         },
         {
           path: "/api/v1/gateway/users",
+          statusCode: 200,
+          responseTime: 60,
         },
         {
           path: "/api/v1/gateway/products",
+          statusCode: 200,
+          responseTime: 100,
         },
         {
-          path: "/api/v1/gateway/orders/123",
+          path: "/api/v1/gateway/invalid-junk-service",
+          statusCode: 404,
+          responseTime: 10,
         },
         {
           path: "/api/v1/auth/login",
+          statusCode: 200,
+          responseTime: 30,
         },
       ]);
 
       const result = await getServiceAnalytics();
 
+      // Always returns exactly the 3 registered services: users, products, orders
       expect(result).toHaveLength(3);
 
       expect(result).toEqual(
         expect.arrayContaining([
-          {
+          expect.objectContaining({
             service: "users",
             count: 2,
-          },
-          {
+            target: "http://host.docker.internal:8000",
+          }),
+          expect.objectContaining({
             service: "products",
             count: 1,
-          },
-          {
+            target: "http://host.docker.internal:8001",
+          }),
+          expect.objectContaining({
             service: "orders",
-            count: 1,
-          },
+            count: 0,
+            target: "http://host.docker.internal:8002",
+            successRate: null,
+            errorRate: null,
+            averageResponseTime: null,
+            p95: null,
+            p99: null,
+          }),
         ])
       );
     });
@@ -321,6 +340,8 @@ describe("Analytics Service", () => {
         averageResponseTime: 101.35,
       });
 
+      expect(result).toHaveProperty("uptime");
+      expect(result).toHaveProperty("memoryUsage");
       expect(result.gateway).toHaveProperty("uptime");
       expect(result.gateway).toHaveProperty("checkTime");
     });

@@ -9,6 +9,9 @@
     "start": "node server.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/tests/setup.js"

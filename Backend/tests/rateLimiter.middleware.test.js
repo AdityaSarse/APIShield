@@ -184,7 +184,7 @@ describe("Rate Limiter Middleware", () => {
     );
   });
 
-  test("should handle Redis errors", async () => {
+  test("should fail-open gracefully on Redis errors", async () => {
     incr.mockRejectedValue(new Error("Redis connection failed"));
 
     const req = {
@@ -198,10 +198,8 @@ describe("Rate Limiter Middleware", () => {
 
     await rateLimiter(req, res, next);
 
+    expect(res.setHeader).toHaveBeenCalledWith("X-RateLimit-Degraded", "true");
     expect(next).toHaveBeenCalledTimes(1);
-
-    const error = next.mock.calls[0][0];
-
-    expect(error.message).toBe("Redis connection failed");
+    expect(next).toHaveBeenCalledWith();
   });
 });
