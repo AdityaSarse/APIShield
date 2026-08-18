@@ -4,11 +4,13 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
-  ADMIN
-  DEVELOPER
+  admin
+  developer
+  viewer
 }
 
 model User {
@@ -16,8 +18,44 @@ model User {
   name         String
   email        String   @unique
   passwordHash String
-  role         Role     @default(DEVELOPER)
+  role         Role     @default(developer)
   status       Boolean  @default(true)
+
+  apiKeys      ApiKey[]
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model ApiKey {
+  id          String       @id @default(uuid())
+  name        String
+  keyHash     String       @unique
+  prefix      String
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revoked     Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  userId      String
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  requestLogs RequestLog[]
+}
+
+model RequestLog {
+  id           String   @id @default(uuid())
+
+  method       String
+  path         String
+  statusCode   Int
+  responseTime Int
+
+  ipAddress    String?
+  userAgent    String?
+
+  apiKeyId     String?
+  apiKey       ApiKey?  @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+
+  createdAt    DateTime @default(now())
 }

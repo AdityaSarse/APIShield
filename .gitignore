@@ -1,14 +1,17 @@
 # Dependencies
 node_modules/
 
-# Environment
+# Environment variables
 .env
+.env.*
+!.env.example
+
+# Prisma generated files
+generated/
+/generated/prisma
 
 # Logs
 *.log
-
-# Prisma generated files (if applicable)
-generated/
 
 # OS
 .DS_Store

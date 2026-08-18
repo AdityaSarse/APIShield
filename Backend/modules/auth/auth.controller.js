@@ -1,0 +1,87 @@
+import { registerUser } from "./services/register.service.js";
+import { loginUser } from "./services/login.service.js";
+import { refreshAccessToken } from "./services/refreshToken.service.js";
+import { logoutUser } from "./services/logout.service.js";
+import ApiResponse from "../../utils/ApiResponse.js";
+
+export const register = async (req, res, next) => {
+  try {
+    const user = await registerUser(req.validatedData);
+
+    return res.status(201).json(
+      new ApiResponse(
+        201,
+        "User registered successfully",
+        user
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const login = async (req, res, next) => {
+  try {
+    const { user, accessToken, refreshToken } = await loginUser(req.validatedData);
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Login successful",
+        {
+          user,
+          accessToken,
+        }
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const refresh = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+
+    const data = await refreshAccessToken(refreshToken);
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Access token refreshed successfully",
+        data
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logout = async (req, res, next) => {
+  try {
+    await logoutUser();
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        "Logout successful",
+        null
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+};
