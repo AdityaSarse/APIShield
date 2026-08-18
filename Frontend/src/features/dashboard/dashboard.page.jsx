@@ -13,19 +13,19 @@ import TopApiKeys from "./components/TopApiKeys";
 
 function DashboardPage() {
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-4 sm:space-y-6 pb-12">
       {/* Dashboard Header */}
       <DashboardPageHeader />
 
       {/* 1. KPI stat cards */}
       <StatCards />
 
-      {/* 2. Traffic Overview (8 cols) + Error Rate (4 cols) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-8">
+      {/* 2. Traffic Overview (full) + Error Rate — stack on mobile, side-by-side on lg */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-8">
           <TrafficOverview />
         </div>
-        <div className="xl:col-span-4">
+        <div className="lg:col-span-4">
           <ErrorRate />
         </div>
       </div>
@@ -33,12 +33,12 @@ function DashboardPage() {
       {/* 3. Gateway Monitoring */}
       <GatewayMonitoring />
 
-      {/* 4. Active API Services (7 cols) + Status Codes (5 cols) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-7">
+      {/* 4. Active API Services + Status Codes — stack on mobile, side-by-side on lg */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-7">
           <ActiveServicesTable />
         </div>
-        <div className="xl:col-span-5">
+        <div className="lg:col-span-5">
           <StatusCodeChart />
         </div>
       </div>
@@ -46,12 +46,12 @@ function DashboardPage() {
       {/* 5. Rate Limiting Engines */}
       <AlgorithmGrid />
 
-      {/* 6. Service Analytics (7 cols) + Response Time (5 cols) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-7">
+      {/* 6. Service Analytics + Response Time — stack on mobile, side-by-side on lg */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-7">
           <ServiceAnalytics />
         </div>
-        <div className="xl:col-span-5">
+        <div className="lg:col-span-5">
           <ResponseTimeAnalytics />
         </div>
       </div>

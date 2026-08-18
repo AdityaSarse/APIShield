@@ -29,8 +29,8 @@ function AnalyticsStatCards() {
       value: isLoading ? "—" : totalRequests.toLocaleString(),
       subtitle: "Lifetime gateway calls",
       icon: Activity,
-      iconColor: "text-[#4F46E5]",
-      iconBg: "bg-[#EEF2FF]",
+      iconColor: "text-[#18181B]",
+      iconBg: "bg-[#F4F4F5]",
     },
     {
       title: "Success Rate",
@@ -53,8 +53,8 @@ function AnalyticsStatCards() {
       value: isLoading ? "—" : `${avgResponseTime.toFixed(0)} ms`,
       subtitle: "Gateway roundtrip latency",
       icon: Clock,
-      iconColor: "text-[#2563EB]",
-      iconBg: "bg-[#EFF6FF]",
+      iconColor: "text-[#18181B]",
+      iconBg: "bg-[#F4F4F5]",
     },
   ];
 

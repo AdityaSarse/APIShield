@@ -68,11 +68,11 @@ function Sidebar() {
                     to={item.path}
                     className={`flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-sm transition-all ${
                       active
-                        ? "bg-[#F1F3F5] text-[#18181B] font-bold"
+                        ? "bg-[#111111] text-white font-bold"
                         : "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#18181B] font-medium"
                     }`}
                   >
-                    <Icon className={`h-4 w-4 ${active ? "text-[#18181B]" : "text-[#71717A]"}`} />
+                    <Icon className={`h-4 w-4 ${active ? "text-white" : "text-[#71717A]"}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -95,11 +95,11 @@ function Sidebar() {
                     to={item.path}
                     className={`flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-sm transition-all ${
                       active
-                        ? "bg-[#F1F3F5] text-[#18181B] font-bold"
+                        ? "bg-[#111111] text-white font-bold"
                         : "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#18181B] font-medium"
                     }`}
                   >
-                    <Icon className={`h-4 w-4 ${active ? "text-[#18181B]" : "text-[#71717A]"}`} />
+                    <Icon className={`h-4 w-4 ${active ? "text-white" : "text-[#71717A]"}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -119,7 +119,7 @@ function Sidebar() {
           to="/settings"
           className={`flex items-center gap-3 px-3.5 py-2 rounded-2xl text-sm font-medium transition-all ${
             location.pathname === "/settings"
-              ? "bg-[#F1F3F5] text-[#18181B] font-bold"
+              ? "bg-[#111111] text-white font-bold"
               : "text-[#71717A] hover:bg-[#F4F4F5] hover:text-[#18181B]"
           }`}
         >
@@ -136,7 +136,7 @@ function Sidebar() {
         </a>
 
         {/* User Profile Info Card */}
-        <div className="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-[#F8F9FA] border border-[#EBECEF]">
+        <div className="flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-[#FAF9F6] border border-[#EBECEF]">
           <div className="h-8 w-8 rounded-full bg-[#18181B] text-white flex items-center justify-center font-bold text-xs">
             AU
           </div>

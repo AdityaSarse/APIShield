@@ -39,11 +39,11 @@ function TrafficOverview() {
           </h3>
           <div className="flex items-center gap-4 mt-1.5 text-xs">
             <div className="flex items-center gap-1.5 font-medium text-[#71717A]">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#4F46E5]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#16A34A]" />
               <span>Allowed Traffic</span>
             </div>
             <div className="flex items-center gap-1.5 font-medium text-[#71717A]">
-              <span className="h-2.5 w-2.5 rounded-full bg-[#93C5FD]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#DC2626]" />
               <span>Rejected Traffic</span>
             </div>
           </div>
@@ -51,9 +51,9 @@ function TrafficOverview() {
 
         <div className="flex items-center gap-2">
           {!isLoading && !isError && visibleRows.length > 0 && (
-            <div className="flex items-center gap-1.5 rounded-full bg-[#EEF2FF] px-2.5 py-1">
-              <TrendingUp className="h-3 w-3 text-[#4F46E5]" />
-              <span className="text-[10px] font-bold text-[#4F46E5]">
+            <div className="flex items-center gap-1.5 rounded-full bg-[#DCFCE7] px-2.5 py-1">
+              <TrendingUp className="h-3 w-3 text-[#16A34A]" />
+              <span className="text-[10px] font-bold text-[#15803D]">
                 {totalRequests.toLocaleString()} requests
               </span>
             </div>
@@ -137,13 +137,13 @@ function TrafficOverview() {
                     <div
                       title={`Allowed: ${allowed.toLocaleString()}`}
                       style={{ height: `${allowedH}%` }}
-                      className="w-3 rounded-t-md bg-[#4F46E5] transition-all duration-300 group-hover:bg-[#4338CA]"
+                      className="w-3 rounded-t-md bg-[#16A34A] transition-all duration-300 group-hover:bg-[#15803D]"
                     />
                     {rejected > 0 && (
                       <div
                         title={`Rejected: ${rejected.toLocaleString()}`}
                         style={{ height: `${rejectedH}%` }}
-                        className="w-3 rounded-t-md bg-[#93C5FD] transition-all duration-300 group-hover:opacity-80"
+                        className="w-3 rounded-t-md bg-[#DC2626]/70 transition-all duration-300 group-hover:opacity-90"
                       />
                     )}
                   </div>

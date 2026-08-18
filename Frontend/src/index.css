@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-canvas: #F8F9FA;
+  --color-canvas: #FAF9F6;
   --color-surface: #FFFFFF;
   --color-border: #EBECEF;
   --color-border-subtle: #F1F3F5;
@@ -10,7 +10,7 @@
   --color-[text-muted]: #71717A;
   --color-[text-light]: #A1A1AA;
 
-  --color-primary: #18181B;
+  --color-primary: #111111;
   --color-primary-light: #F4F4F5;
   --color-accent-indigo: #4F46E5;
   --color-accent-indigo-light: #EEF2FF;
@@ -33,7 +33,7 @@
 
 :root {
   font-family: var(--font-sans);
-  background-color: #F8F9FA;
+  background-color: #FAF9F6;
   color: #18181B;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -43,7 +43,7 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #F8F9FA;
+  background-color: #FAF9F6;
 }
 
 /* Custom scrollbars */
@@ -64,3 +64,21 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #D4D4D8;
 }
+
+/* Hide scrollbar but keep scroll behavior (for horizontal nav) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Page-level card entrance feel */
+.card-hover {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.card-hover:hover {
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.07);
+  transform: translateY(-1px);
+}

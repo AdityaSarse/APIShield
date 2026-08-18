@@ -1,5 +1,6 @@
 import { Clock3, Activity, Zap } from "lucide-react";
 import { useResponseTimeAnalytics } from "../hooks/useAnalytics";
+import ImpactBadge from "../../../components/ui/ImpactBadge";
 
 function ResponseTimeAnalytics() {
   const { data, isLoading, isError } = useResponseTimeAnalytics();
@@ -50,8 +51,8 @@ function ResponseTimeAnalytics() {
           </div>
         </div>
 
-        <span className="inline-flex items-center gap-1 rounded-full bg-[#EEF2FF] px-2.5 py-0.5 text-[10px] font-bold text-[#4F46E5]">
-          <Zap className="h-3 w-3 text-[#4F46E5]" />
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#F4F4F5] px-2.5 py-0.5 text-[10px] font-bold text-[#18181B]">
+          <Zap className="h-3 w-3 text-[#18181B]" />
           P95/P99 Tracked
         </span>
       </div>
@@ -89,9 +90,7 @@ function ResponseTimeAnalytics() {
         <div className="rounded-2xl bg-[#FEF3C7]/40 p-3.5 border border-[#FCD34D]">
           <div className="flex items-center justify-between">
             <p className="text-[10px] font-bold text-[#D97706]">P95</p>
-            <span className="text-[9px] font-bold text-[#B45309] bg-[#FEF3C7] px-1.5 py-0.5 rounded-full">
-              95% ≤
-            </span>
+            <ImpactBadge value={Number(p95)} type="latency" />
           </div>
           <p className="mt-1.5 font-mono text-xl font-extrabold text-[#92400E]">
             {p95}
@@ -100,16 +99,14 @@ function ResponseTimeAnalytics() {
         </div>
 
         {/* P99 */}
-        <div className="rounded-2xl bg-[#EEF2FF]/60 p-3.5 border border-[#C7D2FE]">
+        <div className="rounded-2xl bg-[#FEF3C7]/40 p-3.5 border border-[#FCD34D]">
           <div className="flex items-center justify-between">
-            <p className="text-[10px] font-bold text-[#4F46E5]">P99</p>
-            <span className="text-[9px] font-bold text-[#4338CA] bg-[#EEF2FF] px-1.5 py-0.5 rounded-full">
-              99% ≤
-            </span>
+            <p className="text-[10px] font-bold text-[#D97706]">P99</p>
+            <ImpactBadge value={Number(p99)} type="latency" />
           </div>
-          <p className="mt-1.5 font-mono text-xl font-extrabold text-[#3730A3]">
+          <p className="mt-1.5 font-mono text-xl font-extrabold text-[#92400E]">
             {p99}
-            <span className="ml-1 text-xs text-[#4338CA]">ms</span>
+            <span className="ml-1 text-xs text-[#B45309]">ms</span>
           </p>
         </div>
 

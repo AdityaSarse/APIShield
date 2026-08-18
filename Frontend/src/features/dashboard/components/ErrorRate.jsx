@@ -6,6 +6,8 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { useErrorRateAnalytics } from "../hooks/useDashboardAnalytics";
+import ErrorRateGauge from "./ErrorRateGauge";
+import ImpactBadge from "../../../components/ui/ImpactBadge";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
@@ -91,33 +93,22 @@ function ErrorRate() {
       {/* ── Content ──────────────────────────────────────────────────── */}
       {!isLoading && !isError && (
         <>
-          {/* Error rate display */}
-          <div className="mt-5 flex items-end justify-between">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[#A1A1AA]">
-                Error Rate
-              </p>
-              <div className="mt-1 flex items-baseline gap-0.5">
-                <span className={`font-mono text-4xl font-extrabold leading-none ${rateMeta.rateColor}`}>
-                  {errorRate.toFixed(2)}
-                </span>
-                <span className="font-mono text-lg font-bold text-[#71717A]">
-                  %
-                </span>
-              </div>
-            </div>
+          {/* ── Gauge hero ────────────────────────────────────────────────────── */}
+          <ErrorRateGauge errorRate={errorRate} />
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#F8F9FA]">
-              {errorRate > 0 ? (
-                <TrendingDown className={`h-5 w-5 ${rateMeta.icon}`} />
-              ) : (
-                <CheckCircle2 className="h-5 w-5 text-[#15803D]" />
-              )}
+          {/* Error rate label row */}
+          <div className="flex items-center justify-between mt-1 px-1">
+            <div className="flex items-baseline gap-1.5">
+              <span className={`font-mono text-xl font-extrabold leading-none ${rateMeta.rateColor}`}>
+                {errorRate.toFixed(2)}
+              </span>
+              <span className="font-mono text-sm font-bold text-[#71717A]">%</span>
             </div>
+            <ImpactBadge value={errorRate} type="errorRate" />
           </div>
 
           {/* Success rate bar */}
-          <div className="mt-5">
+          <div className="mt-4">
             <div className="flex items-center justify-between text-[10px] font-semibold text-[#71717A]">
               <span>Successful requests</span>
               <span className="font-mono">{successRate.toFixed(1)}%</span>

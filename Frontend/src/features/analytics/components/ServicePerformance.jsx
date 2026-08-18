@@ -81,7 +81,7 @@ function ServicePerformance() {
                 <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#F4F4F5]">
                   <div
                     style={{ width: `${percentage}%` }}
-                    className="h-full rounded-full bg-[#18181B] transition-all duration-500"
+                    className="h-full rounded-full bg-[#16A34A] transition-all duration-500"
                   />
                 </div>
               </div>
