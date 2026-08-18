@@ -24,9 +24,11 @@ export const gatewayHealth = (req, res) => {
 };
 
 export const proxyRequest = (req, res, next) => {
-  const { service } = req.params;
-
-  const proxy = getServiceProxy(service);
-
-  return proxy(req, res, next);
+  try {
+    const { service } = req.params;
+    const proxy = getServiceProxy(service);
+    return proxy(req, res, next);
+  } catch (error) {
+    return next(error);
+  }
 };
