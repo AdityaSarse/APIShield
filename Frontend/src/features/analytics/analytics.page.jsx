@@ -10,41 +10,33 @@ import RequestAnalyticsTable from "./components/RequestAnalyticsTable";
 
 function AnalyticsPage() {
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-4 sm:space-y-6 pb-12">
       {/* Page Header */}
       <AnalyticsHeader />
 
       {/* KPI Summary Cards */}
       <AnalyticsStatCards />
 
-      {/* Row 1: Request Volume (8 cols) + Success/Error Analytics (4 cols) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-8">
+      {/* Row 1: Request Volume + Success/Error — stack on mobile, side-by-side on lg */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-12">
+        <div className="lg:col-span-8">
           <RequestVolumeChart />
         </div>
-        <div className="xl:col-span-4">
+        <div className="lg:col-span-4">
           <SuccessErrorChart />
         </div>
       </div>
 
-      {/* Row 2: Status Code Distribution (6 cols) + Service Performance (6 cols) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-6">
-          <StatusCodeAnalytics />
-        </div>
-        <div className="xl:col-span-6">
-          <ServicePerformance />
-        </div>
+      {/* Row 2: Status Codes + Service Performance — side-by-side on md */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
+        <StatusCodeAnalytics />
+        <ServicePerformance />
       </div>
 
-      {/* Row 3: Response Time Latency (6 cols) + API Key Usage (6 cols) */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <div className="xl:col-span-6">
-          <ResponseTimeAnalytics />
-        </div>
-        <div className="xl:col-span-6">
-          <ApiKeyUsage />
-        </div>
+      {/* Row 3: Response Time + API Key Usage — side-by-side on md */}
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
+        <ResponseTimeAnalytics />
+        <ApiKeyUsage />
       </div>
 
       {/* Row 4: Recent Request Logs */}

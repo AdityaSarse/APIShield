@@ -126,7 +126,7 @@ function GatewayMonitoring() {
 
         {/* Services Status Grid */}
         {!isLoading && !isError && monitoring && (
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:gap-3">
             {services.map((service) => {
               const Icon = service.icon;
               const config =
@@ -175,7 +175,7 @@ function GatewayMonitoring() {
             </span>
           </div>
 
-          <div className="mt-4 grid grid-cols-3 gap-4">
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
               <p className="text-[10px] font-medium text-[#71717A]">
                 Avg Response

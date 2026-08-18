@@ -1,5 +1,6 @@
 import { Gauge, Sliders, ShieldAlert, Activity, RefreshCw } from "lucide-react";
 import { useRateLimitAnalytics } from "../dashboard/hooks/useDashboardAnalytics";
+import ImpactBadge from "../../components/ui/ImpactBadge";
 
 function RateLimitingPage() {
   const { data, isLoading, isError, refetch } = useRateLimitAnalytics();
@@ -8,9 +9,9 @@ function RateLimitingPage() {
   const engines = Array.isArray(analytics?.engines) ? analytics.engines : [];
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-4 sm:space-y-6 pb-12">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#EBECEF] pb-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-[#EBECEF] pb-5 sm:pb-6">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-2xl bg-[#FEF3C7] border border-[#FCD34D] flex items-center justify-center text-[#D97706] shadow-2xs">
             <Gauge className="h-5 w-5" />
@@ -36,7 +37,7 @@ function RateLimitingPage() {
       </div>
 
       {/* Global Config Banner */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-3">
         <div className="rounded-[22px] border border-[#EBECEF] bg-white p-5 shadow-2xs">
           <span className="text-xs font-bold text-[#71717A]">Rate Limit Window</span>
           <p className="mt-2 font-mono text-2xl font-extrabold text-[#18181B]">
@@ -106,7 +107,7 @@ function RateLimitingPage() {
         )}
 
         {!isLoading && !isError && engines.length > 0 && (
-          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {engines.map((eng) => {
               const isLimited = eng.status === "limited";
               const util = eng.utilization ?? 0;
@@ -146,7 +147,7 @@ function RateLimitingPage() {
 
                     <div className="text-right">
                       <span className="text-[10px] font-semibold text-[#71717A]">TTL Countdown</span>
-                      <p className="font-mono text-xs font-bold text-[#4F46E5]">
+                      <p className="font-mono text-xs font-bold text-[#18181B]">
                         {eng.ttl}s
                       </p>
                     </div>
@@ -154,15 +155,18 @@ function RateLimitingPage() {
 
                   {/* Utilization Progress Bar */}
                   <div className="mt-3">
-                    <div className="flex justify-between text-[9px] font-bold text-[#71717A] mb-1">
+                    <div className="flex justify-between items-center text-[9px] font-bold text-[#71717A] mb-1">
                       <span>Quota Used</span>
-                      <span>{util}%</span>
+                      <div className="flex items-center gap-1.5">
+                        <span>{util}%</span>
+                        <ImpactBadge value={util} type="utilization" />
+                      </div>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-[#EBECEF] overflow-hidden">
                       <div
                         style={{ width: `${Math.min(util, 100)}%` }}
                         className={`h-full rounded-full transition-all duration-500 ${
-                          util >= 100 ? "bg-[#B91C1C]" : util >= 80 ? "bg-[#D97706]" : "bg-[#4F46E5]"
+                          util >= 100 ? "bg-[#B91C1C]" : util >= 80 ? "bg-[#D97706]" : "bg-[#16A34A]"
                         }`}
                       />
                     </div>

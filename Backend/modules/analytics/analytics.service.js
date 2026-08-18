@@ -123,6 +123,12 @@ export const getServiceAnalytics = async () => {
     const sum = data.responseTimes.reduce((acc, val) => acc + val, 0);
     const avg = count > 0 ? sum / count : 0;
 
+    const getPct = (pct) => {
+      if (count === 0) return 0;
+      const idx = Math.ceil((pct / 100) * count) - 1;
+      return data.responseTimes[Math.max(0, Math.min(idx, count - 1))];
+    };
+
     const hasRequests = data.totalRequests > 0;
 
     const successRate = hasRequests
@@ -198,16 +204,16 @@ export const getTopApiKeysAnalytics = async () => {
 
   const apiKeys = apiKeyIds.length
     ? await prisma.apiKey.findMany({
-        where: {
-          id: {
-            in: apiKeyIds,
-          },
+      where: {
+        id: {
+          in: apiKeyIds,
         },
-        select: {
-          id: true,
-          prefix: true,
-        },
-      })
+      },
+      select: {
+        id: true,
+        prefix: true,
+      },
+    })
     : [];
 
   const apiKeyMap = new Map(
@@ -499,6 +505,13 @@ export const getGatewayMonitoring = async () => {
 
   const uptime = process.uptime();
   const mem = process.memoryUsage();
+
+  const gatewayStatus =
+    databaseStatus === "disconnected"
+      ? "unhealthy"
+      : redisStatus === "disconnected"
+        ? "degraded"
+        : "healthy";
 
   return {
     status: gatewayStatus,
